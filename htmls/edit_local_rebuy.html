@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript" src="js/edit_local_rebuy.js"></script>
+</head>
+<body>
+
+<h1>Update Rebuy details API</h1>
+
+<form action="http://103.59.75.140:8080/update_algotrader_rebuy" method="post">
+  <label for="update_name"><b>Share name:</b></label>
+  <input type="text" id="update_name" name="update_name" placeholder="Enter share name" readonly><br><br>
+  <label for="update_exchange"><b>Exchange:</b></label>
+  <input type="text" id="update_exchange" name="update_exchange" placeholder="Enter exchange" readonly><br><br>
+  <label for="base_price"><b>Stop Loss Price/Base Price:</b></label>
+  <input type="text" id="base_price" name="base_price" placeholder="Error. No connection" readonly><br><br>
+  <label for="update_rebuy_perc"><b>REBUY percentage on Stop Loss Price:</b></label>
+  <input type="text" id="update_rebuy_perc" name="update_rebuy_perc" placeholder="Error. No connection."><br><br>
+  <label for="update_rebuy_quant"><b>REBUY quantity:</b></label>
+  <input type="text" id="update_rebuy_quant" name="update_rebuy_quant" placeholder="Error. No connection."><br><br>
+  <label for="update_exit_perc"><b>Exit to TRACK percentage after REBUY done:</b></label>
+  <input type="text" id="update_exit_perc" name="update_exit_perc" placeholder="Error. No connection"><br><br>
+  <input type="submit" value="UPDATE"><br><br>
+  <span id="error" style="color: firebrick;"></span>
+</form>
+<p>Go back to home page and refresh after every successfull UPDATE. This is recommended since the website is not dynamically updated after making changes and cached value is used.</p>
+</body>
+</html>
+

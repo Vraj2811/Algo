@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Algotrader APIs</title>
+  <link rel="stylesheet" href="css/sorted_holdings-style.css">
+  <script src="js/sorted_holdings.js" defer></script>
+</head>
+<body>
+
+<h1>Stock-Ranker Apis</h1>
+<h2>Get the historical holdings data sorted by momentum in descending order.</h2>
+
+<form action="http://103.59.75.140:8080/getcsv" method="post">
+  <label for="days">Enter the time period(in days):</label>
+  <input type="text" id="days" name="days"><br><br>
+  <!-- <label for="lname">Last name:</label>
+  <input type="text" id="lname" name="lname"><br><br> -->
+  <button type="submit">Submit</button>
+</form>
+<p>This should return a .csv file</p>
+
+<h2>Add token to the Analyser</h2>
+
+<form action="http://103.59.75.140:8080/add_token" method="get">
+  <label for="refresh">Refresh memory with latest shares:</label>
+  <button type="submit" formaction="http://103.59.75.140:8080/refresh_instruments">Refresh</button><br><br>
+  <label for="token">Enter the token of share:</label>
+  <!-- <label for="lname">Last name:</label>
+    <input type="text" id="lname" name="lname"><br><br> -->
+  <input type="search" id="z_share_name" name="z_share_name" placeholder="Enter share name" autocomplete="off">
+  <input type="text" id="token" name="token" placeholder="Token">
+  <input type="text" id="z_exchange" name="z_exchange" placeholder="Exchange">
+
+  <button type="submit">Add</button><br><br>
+  <div class="share-cards" id="share-card-container"></div>
+  <template id="share-card-template">
+    <div class="card" id="">
+      <div class="header" id="card-header"></div>
+      <div class="body" id="card-body"></div>
+      <span class="body2" id="card-body-2" style="display: none;"></span>
+    </div>
+  </template>
+</form>
+<p>You can get the token from Chart link of the holding on kite. </p>
+
+</body>
+</html>

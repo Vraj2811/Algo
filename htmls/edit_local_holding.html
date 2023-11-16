@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript" src="js/edit_local_holdings.js"></script>
+</head>
+<body>
+
+<h1>Update holdings API</h1>
+
+<form action="http://103.59.75.140:8080/update_algotrader_holding" method="post">
+  <label for="update_name"><b>Share name:</b></label>
+  <input type="text" id="update_name" name="update_name" placeholder="Enter share name" readonly><br><br>
+  <label for="update_exchange"><b>Exchange:</b></label>
+  <input type="text" id="update_exchange" name="update_exchange" placeholder="Enter exchange" readonly><br><br>
+  <label for="update_anbp"><b>Mode A | Next buy trigger percentage:</b></label>
+  <input type="text" id="update_anbp" name="update_anbp" placeholder="Update mode A: Next buy percentage"><br><br>
+  <label for="update_anbqp"><b>Mode A | Next buy Quantity in percentage:</b></label>
+  <input type="text" id="update_anbqp" name="update_anbqp" placeholder="Update mode A: Next buy quantity percentage"><br><br>
+  <label for="update_bsl"><b>Mode B | Stop loss percentage:</b></label>
+  <input type="text" id="update_bsl" name="update_bsl" placeholder="Update mode B: Stop loss percentage"><br><br>
+  <!-- <label for="update_quant"><b>Current Quantity:</b></label>
+  <input type="text" id="update_quant" name="update_quant" placeholder="Update quantity"><br><br> -->
+  <input type="submit" value="UPDATE"><br><br>
+  <span id="error" style="color: firebrick;"></span>
+</form>
+<p>Go back to home page and refresh after every successfull UPDATE. This is recommended since the website is not dynamically updated after making changes and cached value is used.</p>
+</body>
+</html>
