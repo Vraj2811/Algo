@@ -18,7 +18,7 @@ LOCAL_REBUY_PATH = TRADER_PATH + "user/rebuy.csv"
 LOCAL_TICKER_PATH = TRADER_PATH + "ticker_data.csv"
 
 print("Configuring Kite..")
-credentials_file = "credentials.json"
+credentials_file = TRADER_PATH+"credentials.json"
 with open(credentials_file, 'r') as json_file:
     credentials_data = json.load(json_file)
 
@@ -26,7 +26,7 @@ with open(credentials_file, 'r') as json_file:
 api_key = credentials_data.get("api_key")
 api_secret = credentials_data.get("api_secret")
 
-with open("access_token.json", 'r') as file:
+with open(TRADER_PATH+"access_token.json", 'r') as file:
     data_a = json.load(file)
 
 # Get the current date in the format 'dd-mm-yy'
@@ -619,4 +619,4 @@ def toggle_status():
 #############################################################
 
 if __name__ == '__main__':
-    app.run('3.110.142.32', port=8080, debug=True)
+    app.run('0.0.0.0', port=8080, debug=True)
