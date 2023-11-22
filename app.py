@@ -17,13 +17,6 @@ LOCAL_HOLDINGS_PATH = TRADER_PATH + "user/holdings.csv"
 LOCAL_REBUY_PATH = TRADER_PATH + "user/rebuy.csv"
 LOCAL_TICKER_PATH = TRADER_PATH + "ticker_data.csv"
 
-###
-# Load the CSV file into a Pandas DataFrame
-df_holdings = pd.read_csv(LOCAL_HOLDINGS_PATH)
-print("Contents of holdings.csv:")
-print(df_holdings)
-###
-
 print("Configuring Kite..")
 credentials_file = "credentials.json"
 with open(credentials_file, 'r') as json_file:
