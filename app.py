@@ -18,7 +18,7 @@ LOCAL_REBUY_PATH = TRADER_PATH + "user/rebuy.csv"
 LOCAL_TICKER_PATH = TRADER_PATH + "ticker_data.csv"
 
 print("Configuring Kite..")
-credentials_file = r"Vraj\credentials.json"
+credentials_file = r"deployedapp\Vraj\credentials.json"
 with open(credentials_file, 'r') as json_file:
     credentials_data = json.load(json_file)
 
