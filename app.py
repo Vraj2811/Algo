@@ -26,7 +26,7 @@ with open(credentials_file, 'r') as json_file:
 api_key = credentials_data.get("api_key")
 api_secret = credentials_data.get("api_secret")
 
-with open(r"deployedapp/Vraj/access_token.json", 'r') as file:
+with open("access_token.json", 'r') as file:
     data_a = json.load(file)
 
 # Get the current date in the format 'dd-mm-yy'
