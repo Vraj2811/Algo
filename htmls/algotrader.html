@@ -11,24 +11,24 @@
 
 <h1>Algotrader holdings API</h1>
 <h3>Work on Holdings Excel Directly</h3>
-<form action="http://103.59.75.140:8080/get_holdings" method="get">
+<form action="http://172.31.47.250:8080/get_holdings" method="get">
   <label for="getH"><b>Fetch Holdings:</b></label>
   <input type="submit" id="getH" name="getH" value="Get Holdings CSV"><br><br>
 </form>
-<form action="http://103.59.75.140:8080/set_holdings" method="post" enctype="multipart/form-data">
+<form action="http://172.31.47.250:8080/set_holdings" method="post" enctype="multipart/form-data">
   <label for="setH"><b>Upload Holdings:</b></label>
   <input type="file" id="file" name="file" value="Upload Holdings CSV"><br>
   <input type="submit" id="setH" name="setH" value="Upload"><br><br>
 </form>
-<form action="http://103.59.75.140:8080/add_share_to_trader" method="get">
+<form action="http://172.31.47.250:8080/add_share_to_trader" method="get">
   <label for="z_share_name"><b>Add share from zerodha to algotrader holdings:</b></label><br>
   <input type="search" id="z_share_name" name="z_share_name" placeholder="Enter share name">
   <input type="text" id="z_exchange" name="z_exchange" placeholder="Enter exchange">
   <input type="submit" value="ADD">
   <input type="submit" value="EDIT" formaction="edit_local_holding.html">
-  <input type="submit" value="DELETE" onclick="return confirm('Delete permanantly from AlgoTrader holdings and Rebuy table?');" formaction="http://103.59.75.140:8080/delete_share_from_trader">
-  <input type="submit" value="CHECK STATUS" formaction="http://103.59.75.140:8080/check_status">
-  <input type="submit" value="TOGGLE STATUS" formaction="http://103.59.75.140:8080/toggle_status">
+  <input type="submit" value="DELETE" onclick="return confirm('Delete permanantly from AlgoTrader holdings and Rebuy table?');" formaction="http://172.31.47.250:8080/delete_share_from_trader">
+  <input type="submit" value="CHECK STATUS" formaction="http://172.31.47.250:8080/check_status">
+  <input type="submit" value="TOGGLE STATUS" formaction="http://172.31.47.250:8080/toggle_status">
 
   <div class="share-cards" id="share-card-container"></div>
   <template id="share-card-template">
@@ -45,37 +45,37 @@
   <input type="text" id="edit_exchange" name="edit_exchange" placeholder="Enter exchange">
   <input type="submit" value="EDIT"><br><br>
 </form> -->
-<!-- <form action="http://103.59.75.140:8080/check_status" method="post">
+<!-- <form action="http://172.31.47.250:8080/check_status" method="post">
   <label for="_name"><b>Check share status:</b></label>
   <input type="text" id="s_name" name="s_name" placeholder="Enter share name">
   <input type="text" id="s_exchange" name="s_exchange" placeholder="Enter exchange">
   <input type="submit" value="CHECK">
-  <input type="submit" value="TOGGLE STATUS" formaction="http://103.59.75.140:8080/toggle_status"><br><br>
+  <input type="submit" value="TOGGLE STATUS" formaction="http://172.31.47.250:8080/toggle_status"><br><br>
 </form> -->
 
 
 
 
 <!-- <p>Sync the local AlgoTrader holdings data with the Zerodha Holdings</p>
-<form action="http://103.59.75.140:8080/sync_zerodha_holdings" method="get">
+<form action="http://172.31.47.250:8080/sync_zerodha_holdings" method="get">
   <label for="getH"><b>SYNC Holdings:</b></label>
   <input type="submit" id="syncH" name="syncH" value="SYNC Holdings"><br><br>
 </form> -->
 
 <h1>Apis for downloading additional information</h1>
-<form action="http://103.59.75.140:8080/get_orders" method="get">
+<form action="http://172.31.47.250:8080/get_orders" method="get">
   <label for="getH"><b>Download Orders executed by algotrader</b></label>
   <input type="submit" id="getO" name="getO" value="Orders"><br><br>
 </form>
-<form action="http://103.59.75.140:8080/get_interval_data" method="get">
+<form action="http://172.31.47.250:8080/get_interval_data" method="get">
   <label for="getH"><b>Download interval data</b></label>
   <input type="submit" id="getI" name="getI" value="Interval Data"><br><br>
 </form>
-<form action="http://103.59.75.140:8080/get_rebuy_data" method="get">
+<form action="http://172.31.47.250:8080/get_rebuy_data" method="get">
   <label for="getH"><b>Download rebuy data</b></label>
   <input type="submit" id="getR" name="getR" value="Rebuy Data"><br><br>
 </form>
-<form action="http://103.59.75.140:8080/set_rebuy" method="post" enctype="multipart/form-data">
+<form action="http://172.31.47.250:8080/set_rebuy" method="post" enctype="multipart/form-data">
   <label for="setR"><b>Upload Rebuy:</b></label>
   <input type="file" id="file" name="file" value="Upload Rebuy CSV"><br>
   <input type="submit" id="setR" name="setR" value="Upload"><br><br>

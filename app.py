@@ -17,6 +17,8 @@ LOCAL_HOLDINGS_PATH = TRADER_PATH + "user/holdings.csv"
 LOCAL_REBUY_PATH = TRADER_PATH + "user/rebuy.csv"
 LOCAL_TICKER_PATH = TRADER_PATH + "ticker_data.csv"
 
+print(LOCAL_TICKER_PATH)
+
 print("Configuring Kite..")
 credentials_file = "credentials.json"
 with open(credentials_file, 'r') as json_file:
