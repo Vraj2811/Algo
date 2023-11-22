@@ -619,4 +619,4 @@ def toggle_status():
 #############################################################
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=8080, debug=True)
+    app.run('3.110.142.32', port=8080, debug=True)
