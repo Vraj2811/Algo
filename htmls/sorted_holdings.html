@@ -10,7 +10,7 @@
 <h1>Stock-Ranker Apis</h1>
 <h2>Get the historical holdings data sorted by momentum in descending order.</h2>
 
-<form action="http://172.31.47.250:8080/getcsv" method="post">
+<form action="http://3.110.142.32:8080/getcsv" method="post">
   <label for="days">Enter the time period(in days):</label>
   <input type="text" id="days" name="days"><br><br>
   <!-- <label for="lname">Last name:</label>
@@ -21,9 +21,9 @@
 
 <h2>Add token to the Analyser</h2>
 
-<form action="http://172.31.47.250:8080/add_token" method="get">
+<form action="http://3.110.142.32:8080/add_token" method="get">
   <label for="refresh">Refresh memory with latest shares:</label>
-  <button type="submit" formaction="http://172.31.47.250:8080/refresh_instruments">Refresh</button><br><br>
+  <button type="submit" formaction="http://3.110.142.32:8080/refresh_instruments">Refresh</button><br><br>
   <label for="token">Enter the token of share:</label>
   <!-- <label for="lname">Last name:</label>
     <input type="text" id="lname" name="lname"><br><br> -->
