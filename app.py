@@ -13,6 +13,7 @@ import json
 import time
 
 TRADER_PATH = ""
+# TRADER_PATH = "Vraj/"
 LOCAL_HOLDINGS_PATH = TRADER_PATH + "user/holdings.csv"
 LOCAL_REBUY_PATH = TRADER_PATH + "user/rebuy.csv"
 LOCAL_TICKER_PATH = TRADER_PATH + "ticker_data.csv"

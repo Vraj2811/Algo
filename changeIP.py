@@ -34,6 +34,7 @@ def replace_word_in_directory(directory_path, new_word, file_extensions):
                 file_path = os.path.join(root, filename)
                 replace_word_in_file(file_path, new_word)
 
+# directory_path = 'Vraj/htmls'
 directory_path = 'htmls'
 new_word = input("Enter the new word: ")
 file_extensions = (".js", ".html")

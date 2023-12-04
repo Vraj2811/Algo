@@ -11,7 +11,7 @@ from pyotp import TOTP
 import time
 
 # Load credentials from a JSON file
-credentials_file = r"Vraj\user\credentials.json"
+credentials_file = r"user\credentials.json"
 with open(credentials_file, 'r') as json_file:
     credentials_data = json.load(json_file)
 
@@ -26,7 +26,7 @@ zerodha_totp_key = credentials_data.get("zerodha_totp_key")
 print("---Getting Access Token---")
 
 # Define the file path to store the access token
-file_path = r"Vraj\user\access_token.json"
+file_path = r"user\access_token.json"
 
 # Check if the access token file exists; if not, create an empty JSON object
 if not os.path.exists(file_path):
