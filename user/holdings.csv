@@ -1,4 +1,4 @@
 token,share_name,exchange,b_stop_loss_perc,quantity_owned,last_action,last_action_price,invested_money,a_next_buy_perc,a_quant_to_buy,a_quant_to_buy_perc,recent_high,status
 139117572,DATAPATTNS,BSE,20.0,1,BUY,2143.2,2143.2,15.0,1,10.0,2345.15,UNTRACK
-139143172,VENUSPIPES,BSE,20.0,2,B,1510.95,2754.95,15.0,1,10.0,1512.2,ACTIVE
+139143172,VENUSPIPES,BSE,20.0,2,B,1510.95,2754.95,15.0,1,10.0,1512.2,UNTRACK
 136534788,ZENTEC,BSE,20.0,1,BUY,620.6,620.6,15.0,1,10.0,814.0,UNTRACK
