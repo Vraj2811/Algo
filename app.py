@@ -18,7 +18,7 @@ LOCAL_REBUY_PATH = TRADER_PATH + "user/rebuy.csv"
 LOCAL_TICKER_PATH = TRADER_PATH + "ticker_data.csv"
 
 print("Configuring Kite..")
-credentials_file = TRADER_PATH+"credentials.json"
+credentials_file = TRADER_PATH+"user/credentials.json"
 with open(credentials_file, 'r') as json_file:
     credentials_data = json.load(json_file)
 
@@ -26,7 +26,7 @@ with open(credentials_file, 'r') as json_file:
 api_key = credentials_data.get("api_key")
 api_secret = credentials_data.get("api_secret")
 
-with open(TRADER_PATH+"access_token.json", 'r') as file:
+with open(TRADER_PATH+"user/access_token.json", 'r') as file:
     data_a = json.load(file)
 
 # Get the current date in the format 'dd-mm-yy'
