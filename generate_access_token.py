@@ -48,13 +48,12 @@ if today_date in data_a:
 # Initialize KiteConnect with your API key
 kite = KiteConnect(api_key=api_key)
 
-# Configure Selenium webdriver to use Chromium-based Edge in headless mode
-edge_options = webdriver.EdgeOptions()
-edge_options.use_chromium = True
-edge_options.add_argument("--headless")
+# Configure Selenium webdriver to use Chrome in headless mode
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument("--headless")
 
 # Create a WebDriver instance
-driver = webdriver.Edge(options=edge_options)
+driver = webdriver.Chrome(options=chrome_options)
 
 # Navigate to the Kite login URL
 driver.get(kite.login_url())
@@ -81,7 +80,7 @@ totp = TOTP(zerodha_totp_key)
 totp_code = totp.now()
 
 # Find the TOTP field on the page and enter the TOTP code
-totp_field = driver.find_element(By.ID, "userid")
+totp_field = driver.find_element(By.ID, "totp")
 totp_field.send_keys(totp_code)
 
 # Submit the TOTP form
