@@ -8,7 +8,6 @@ from kiteconnect import exceptions as kite_excp
 from kiteconnect import KiteConnect
 import pandas as pd
 from datetime import datetime, timedelta
-# from tqdm import tqdm
 import json
 import time
 
@@ -283,6 +282,29 @@ def get_zerodha_holdings():
     response = make_response(jsonify(z_holdings), 200)
     return response
 
+@app.route('/sync_zerodha_holdings', methods=['GET'])
+def sync_zerodha_holdings():
+    try:
+        # Load AlgoTrader holdings.csv into a dataframe
+        df_algotrader_holdings = pd.read_csv(LOCAL_HOLDINGS_PATH)
+
+        # Iterate over each row and update the information from Zerodha (you need to implement this logic)
+        for index, row in df_algotrader_holdings.iterrows():
+            print(row)
+            # Make requests to Zerodha API or implement your logic to update the holdings
+            # For example, you might want to fetch the latest information for each stock and update the dataframe
+
+        # Save the updated dataframe back to the holdings.csv file
+        df_algotrader_holdings.to_csv(LOCAL_HOLDINGS_PATH, index=False)
+
+        message = "Holdings synced successfully"
+    except Exception as e:
+        # Handle exceptions
+        message = f"Failed to sync holdings. Exception: {str(e)}"
+
+    response_data = {"message": message}
+    response = make_response(jsonify(response_data), 200)
+    return response
 
 @app.route("/delete_share_from_trader", methods=["GET"])
 def delete_share_from_trader():
