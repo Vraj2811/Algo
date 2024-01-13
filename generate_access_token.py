@@ -11,7 +11,7 @@ from pyotp import TOTP
 import time
 
 # Load credentials from a JSON file
-credentials_file = "user/credentials.json"
+credentials_file = "Vraj/user/credentials.json"
 with open(credentials_file, 'r') as json_file:
     credentials_data = json.load(json_file)
 
@@ -26,7 +26,7 @@ zerodha_totp_key = credentials_data.get("zerodha_totp_key")
 print("---Getting Access Token---")
 
 # Define the file path to store the access token
-file_path = "user/access_token.json"
+file_path = "Vraj/user/access_token.json"
 
 # Check if the access token file exists; if not, create an empty JSON object
 if not os.path.exists(file_path):
@@ -49,12 +49,12 @@ if today_date in data_a:
 kite = KiteConnect(api_key=api_key)
 
 # Configure Selenium webdriver to use Chromium-based Edge in headless mode
-edge_options = webdriver.EdgeOptions()
+edge_options = webdriver.ChromeOptions()
 edge_options.use_chromium = True
 edge_options.add_argument("--headless")
 
 # Create a WebDriver instance
-driver = webdriver.Edge(options=edge_options)
+driver = webdriver.Chrome(options=edge_options)
 
 # Navigate to the Kite login URL
 driver.get(kite.login_url())

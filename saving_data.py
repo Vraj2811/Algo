@@ -11,7 +11,7 @@ import subprocess
 logging.basicConfig(level=logging.DEBUG)
 
 # Define the path to the credentials file
-credentials_file = r"Vraj\credentials.json"
+credentials_file = "Vraj/user/credentials.json"
 
 # Read the API key and API secret from the credentials JSON file
 with open(credentials_file, 'r') as json_file:
@@ -21,7 +21,7 @@ api_key = credentials_data.get("api_key")
 api_secret = credentials_data.get("api_secret")
 
 # Read the access token data from a file
-with open(r"Vraj\access_token.json", 'r') as file:
+with open("Vraj/user/access_token.json", 'r') as file:
     data_a = json.load(file)
 
 # Get the current date in the format 'dd-mm-yy'
@@ -42,8 +42,8 @@ shares_interested = holdings["instrument_token"].values.tolist()
 kws = KiteTicker(api_key, access_token)
 
 # Create a directory to store ticker data if it doesn't exist
-if not os.path.exists(r"Vraj\ticker_data"):
-    os.makedirs(r"Vraj\ticker_data")
+if not os.path.exists("Vraj/ticker_data"):
+    os.makedirs("Vraj/ticker_data")
 
 # Create a dictionary to store live data
 live_data = {}
