@@ -3,7 +3,7 @@ const shareCardContainer = document.querySelector('#share-card-container');
 const searchInput = document.querySelector('#z_share_name');
 
 let users = []
-fetch("http://123.123.123.123:8080/get_zerodha_holdings").then(res => res.json()).then(data =>{
+fetch("http://123.456.123:8080/get_zerodha_holdings").then(res => res.json()).then(data =>{
     var i = 0
     users = data.map(user => {
         var card = shareCardTemplate.content.cloneNode(true).children[0];
