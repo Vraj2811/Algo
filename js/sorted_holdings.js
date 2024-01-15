@@ -3,7 +3,7 @@ const shareCardContainer = document.querySelector('#share-card-container');
 const searchInput = document.querySelector('#z_share_name');
 
 let instruments = []
-fetch("http://3.110.182.250:8080/get_instruments",{
+fetch("http://123.123.123.123:8080/get_instruments",{
     method: 'POST',
     headers: {'Content-Type': 'application/json'}
 }).then(res => res.json()).then(data =>{

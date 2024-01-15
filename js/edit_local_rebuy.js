@@ -1,4 +1,4 @@
-let algotraderApi = "http://3.110.182.250:8080/get_rebuy_details"
+let algotraderApi = "http://123.123.123.123:8080/get_rebuy_details"
 window.addEventListener('load', () => {
     // get the name and exchange details from url
     const urlParams = (new URL(document.location)).searchParams;

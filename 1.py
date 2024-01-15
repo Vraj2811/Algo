@@ -45,35 +45,39 @@ except Exception as e:
     print("Exiting the program due to Error.")
     sys.exit(0)
 
-z_holdings = kite.order()
-
-print(z_holdings)
+z_holdings = kite.holdings()
 
 holdings_data = []
 for holding in z_holdings:
     holdings_data.append([holding['instrument_token'], holding['tradingsymbol'],
                          holding['quantity'], holding['average_price']])
 
+# holdings_data = []
+# for holding in z_holdings:
+#     holdings_data.append([holding['instrument_token'], holding['tradingsymbol'],
+#                          holding['quantity'], holding['average_price'], holding['transaction_type']])
+
 # Define the headers for the table
 headers = ["Instrument Token", "Tradingsymbol", "Quantity", "Average Price"]
+# headers = ["Instrument Token", "Tradingsymbol", "Quantity", "Average Price","B/S"]
 
 # Print the table
 print(tabulate(holdings_data, headers, tablefmt="pretty"))
 
-# # order_id = kite.place_order(
-# #     tradingsymbol="ZOMATO",
-# #     exchange=kite.EXCHANGE_NSE,
-# #     transaction_type=kite.TRANSACTION_TYPE_BUY,
-# #     quantity=1,
-# #     variety=kite.VARIETY_REGULAR,  # Use VARIETY_REGULAR for regular orders, not AMO
-# #     order_type=kite.ORDER_TYPE_MARKET,
-# #     product=kite.PRODUCT_CNC,  # CNC for delivery-based equity trades
-# #     validity=kite.VALIDITY_DAY
-# # )
+order_id = kite.place_order(
+    tradingsymbol="TATATECH",
+    exchange=kite.EXCHANGE_NSE,
+    transaction_type=kite.TRANSACTION_TYPE_SELL,
+    quantity=1,
+    variety=kite.VARIETY_REGULAR,  # Use VARIETY_REGULAR for regular orders, not AMO
+    order_type=kite.ORDER_TYPE_MARKET,
+    product=kite.PRODUCT_CNC,  # CNC for delivery-based equity trades
+    validity=kite.VALIDITY_DAY
+)
 
 
-# time.sleep(60)
-# print(tabulate(holdings_data, headers, tablefmt="pretty"))
+time.sleep(60)
+print(tabulate(holdings_data, headers, tablefmt="pretty"))
 
 # from pyotp import TOTP
 
