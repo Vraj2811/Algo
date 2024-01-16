@@ -47,6 +47,8 @@ except Exception as e:
 
 z_holdings = kite.holdings()
 
+print(z_holdings)
+
 holdings_data = []
 for holding in z_holdings:
     holdings_data.append([holding['instrument_token'], holding['tradingsymbol'],

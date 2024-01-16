@@ -282,20 +282,32 @@ def get_zerodha_holdings():
     response = make_response(jsonify(z_holdings), 200)
     return response
 
+
 @app.route('/sync_zerodha_holdings', methods=['GET'])
 def sync_zerodha_holdings():
     try:
-        # Load AlgoTrader holdings.csv into a dataframe
-        df_algotrader_holdings = pd.read_csv(LOCAL_HOLDINGS_PATH)
 
-        # Iterate over each row and update the information from Zerodha (you need to implement this logic)
-        for index, row in df_algotrader_holdings.iterrows():
-            print(row)
-            # Make requests to Zerodha API or implement your logic to update the holdings
-            # For example, you might want to fetch the latest information for each stock and update the dataframe
+        z_holdings = kite.holdings()
+        # Load AlgoTrader holdings.csv into a dataframe
+        z_holdings_data = []
+        for holding in z_holdings:
+            z_holdings_data.append({
+                'token': holding['instrument_token'],
+                'share_name': holding['tradingsymbol'],
+                'exchange': holding['exchange'],
+                'b_stop_loss_perc': 20,
+                'quantity_owned': holding['quantity'],
+                'last_action_price': holding['last_price'],
+                'average_price': holding['average_price'],
+                'a_next_buy_perc' : 15,
+                'a_quant_to_buy_perc':10,
+                'status':'TRACK'
+                # Add more fields as needed
+            })
 
         # Save the updated dataframe back to the holdings.csv file
-        df_algotrader_holdings.to_csv(LOCAL_HOLDINGS_PATH, index=False)
+        df_holdings = pd.DataFrame(z_holdings_data)
+        df_holdings.to_csv(LOCAL_HOLDINGS_PATH, index=False)
 
         message = "Holdings synced successfully"
     except Exception as e:
@@ -305,6 +317,7 @@ def sync_zerodha_holdings():
     response_data = {"message": message}
     response = make_response(jsonify(response_data), 200)
     return response
+
 
 @app.route("/delete_share_from_trader", methods=["GET"])
 def delete_share_from_trader():
