@@ -140,7 +140,7 @@ try:
     while True:
         # Save live data every second
         save_live_data()
-        time.sleep(1)
+        time.sleep(60)
 
 except KeyboardInterrupt:
     # Stop the WebSocket connection and save the final live data

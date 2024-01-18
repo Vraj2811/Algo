@@ -1,12 +1,49 @@
 import time
-from datetime import datetime, timedelta
 import pandas as pd
-import os
-import json
-from kiteconnect import KiteTicker, KiteConnect
 from datetime import datetime, timedelta
+import os
+import shutil
+import sys
+from flask import Flask, request, send_file, render_template, flash, jsonify, make_response
+from flask_cors import CORS
+from kiteconnect import exceptions as kite_excp
+from kiteconnect import KiteConnect
+import pandas as pd
+from datetime import datetime, timedelta
+import json
+import time
+from tabulate import tabulate
 
 # Function to check if the market is open on a weekday (Monday to Friday)
+
+credentials_file = "user/credentials.json"
+with open(credentials_file, 'r') as json_file:
+    credentials_data = json.load(json_file)
+
+# Extract credentials from the JSON data
+api_key = credentials_data.get("api_key")
+api_secret = credentials_data.get("api_secret")
+
+with open("user/access_token.json", 'r') as file:
+    data_a = json.load(file)
+
+# Get the current date in the format 'dd-mm-yy'
+today_date = time.strftime('%d-%m-%y', time.localtime())
+
+# Retrieve the access token for the current date
+access_token = data_a[today_date]
+
+all_tokens = None
+
+kite = KiteConnect(api_key=api_key)
+try:
+    kite.set_access_token(access_token)
+except Exception as e:
+    print(e)
+    print("Exiting the program due to Error.")
+    sys.exit(0)
+
+
 def is_market_open():
     current_time = datetime.now().time()
     current_day = datetime.now().weekday()
@@ -20,142 +57,81 @@ def is_market_open():
     else:
         return False
 
-# Function to calculate RSI
-def calculate_rsi(instrument_token):
-    close_prices = last_close_prices[instrument_token]
-    period = 14  # You can adjust the period as needed
+# Function to perform trading strategy based on RSI
 
-    if len(close_prices) > period:
-        # Calculate daily price changes
-        delta = pd.Series(close_prices).diff(1)
 
-        # Calculate gain (positive changes) and loss (negative changes)
-        gain = delta.where(delta > 0, 0)
-        loss = -delta.where(delta < 0, 0)
+def perform_trading_strategy(instrument_token):
+    file_name = f"ticker_data/{instrument_token}.csv"
+    df = pd.read_csv(file_name)
 
-        # Calculate average gain and average loss over the specified window
-        avg_gain = gain.rolling(window=period, min_periods=1).mean()
-        avg_loss = loss.rolling(window=period, min_periods=1).mean()
+    holdings_df = pd.read_csv("user/holdings.csv")
 
-        # Calculate the relative strength (RS)
-        rs = avg_gain / avg_loss
+    rsi_threshold_low = 30
+    rsi_threshold_high = 70
 
-        # Calculate the RSI using the formula
-        rsi = 100 - (100 / (1 + rs))
+    rsi = df.tail(1)['RSI'].values[0]
+    lp = df.tail(1)['last_price'].values[0]
 
-        return rsi.values[-1]
-    else:
-        return None
+    token_row = holdings_df.loc[holdings_df['token'] == int(instrument_token)]
 
-# Function to save live data to CSV files
-def save_live_data(live_data):
-    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    for instrument_token, data in live_data.items():
-        data["timestamp"] = current_time
-        file_name = f"Vraj/ticker_data/{instrument_token}.csv"
-        df = pd.DataFrame([data])
+    if rsi < rsi_threshold_low or lp > (1 + token_row['a_next_buy_perc'].values[0])/100*token_row['invested_money'].values[0]/token_row['quantity_owned'].values[0]:
+        quantity_to_buy = token_row['a_quant_to_buy_perc'].values[0] * \
+            token_row['quantity_owned'].values[0]
 
-        if not os.path.isfile(file_name):
-            df.to_csv(file_name, index=False)
-        else:
-            df.to_csv(file_name, mode='a', header=False, index=False)
+        order_id = kite.place_order(
+            tradingsymbol=holdings_df['share_name'],
+            exchange=kite.EXCHANGE_NSE,
+            transaction_type=kite.TRANSACTION_TYPE_BUY,
+            quantity=1,
+            variety=kite.VARIETY_REGULAR,  # Use VARIETY_REGULAR for regular orders, not AMO
+            order_type=kite.ORDER_TYPE_MARKET,
+            product=kite.PRODUCT_CNC,  # CNC for delivery-based equity trades
+            validity=kite.VALIDITY_DAY
+        )
+        token_row['quantity_owned'] += 1
+        token_row['invested_money'] += lp
 
-# Callback function to handle incoming ticks
-def on_ticks(ws, ticks):
-    for tick in ticks:
-        instrument_token = tick["instrument_token"]
-        close_price = tick["last_price"]
+    elif rsi > rsi_threshold_high or lp < (1 - token_row['b_stop_loss_perc'].values[0])/100*token_row['invested_money'].values[0]/token_row['quantity_owned'].values[0]:
+        order_id = kite.place_order(
+            tradingsymbol=holdings_df['share_name'],
+            exchange=kite.EXCHANGE_NSE,
+            transaction_type=kite.TRANSACTION_TYPE_SELL,
+            quantity=1,
+            variety=kite.VARIETY_REGULAR,  # Use VARIETY_REGULAR for regular orders, not AMO
+            order_type=kite.ORDER_TYPE_MARKET,
+            product=kite.PRODUCT_CNC,  # CNC for delivery-based equity trades
+            validity=kite.VALIDITY_DAY
+        )
 
-        if instrument_token not in last_close_prices:
-            last_close_prices[instrument_token] = [close_price]
-        else:
-            last_close_prices[instrument_token].append(close_price)
-            if len(last_close_prices[instrument_token]) > 14:
-                last_close_prices[instrument_token].pop(0)
+        token_row['quantity_owned'] -= 1
+        token_row['invested_money'] -= lp
 
-        data = {
-            "timestamp": None,
-            "last_price": close_price,
-            "best_bid_price": tick["depth"]["buy"][0]["price"],
-            "best_bid_quantity": tick["depth"]["buy"][0]["quantity"],
-            "best_ask_price": tick["depth"]["sell"][0]["price"],
-            "best_ask_quantity": tick["depth"]["sell"][0]["quantity"],
-            "open_price": tick["ohlc"]["open"],
-            "close_price": tick["ohlc"]["close"],
-            "high_price": tick["ohlc"]["high"],
-            "low_price": tick["ohlc"]["low"],
-            "open_interest": tick["oi"],
-            "rsi": calculate_rsi(instrument_token, last_close_prices),
-        }
-        live_data[instrument_token] = data
+    holdings_df.to_csv("user/holdings.csv", index=False)
 
-# Callback function to handle the connection
-def on_connect(ws, response):
-    ws.subscribe(shares_interested)
-    ws.set_mode(ws.MODE_FULL, shares_interested)
 
-# Callback function to handle the closing of the WebSocket connection
-def on_close(ws, code, reason):
-    ws.stop()
-
-# Main algorithm function
 def algo_trader():
     while True:
         if is_market_open():
-            print("Market is open. Performing trading strategy...")
+            holdings_file = "user/holdings.csv"
 
-            save_live_data()
+            holdings_df = pd.read_csv(holdings_file)
+            instrument_tokens = holdings_df['instrument_token'].tolist()
+
+            # Perform trading strategy for each token
+            for instrument_token in instrument_tokens:
+                perform_trading_strategy(instrument_token)
+
             time.sleep(60)
         else:
             print("Market is closed. Waiting for the next trading day...")
-
             current_time = datetime.now().time()
-            next_trading_day = datetime.combine(datetime.now().date() + timedelta(days=1), datetime.strptime("09:15:00", "%H:%M:%S").time())
-            time_until_next_trading_day = (next_trading_day - datetime.now()).total_seconds()
+            next_trading_day = datetime.combine(datetime.now().date() + timedelta(days=1),
+                                                datetime.strptime("09:15:00", "%H:%M:%S").time())
+            time_until_next_trading_day = (
+                next_trading_day - datetime.now()).total_seconds()
 
             time.sleep(time_until_next_trading_day)
 
+
 if __name__ == "__main__":
-    # Read API credentials and access token
-    credentials_file = "Vraj/user/credentials.json"
-    with open(credentials_file, 'r') as json_file:
-        credentials_data = json.load(json_file)
-
-    api_key = credentials_data.get("api_key")
-    api_secret = credentials_data.get("api_secret")
-
-    with open("Vraj/user/access_token.json", 'r') as file:
-        data_a = json.load(file)
-
-    today_date = time.strftime('%d-%m-%y', time.localtime())
-    access_token = data_a[today_date]
-
-    # Initialize Kite API and Ticker
-    kite = KiteConnect(api_key=api_key)
-    kite.set_access_token(access_token)
-
-    holdings = pd.DataFrame(kite.holdings())
-    shares_interested = holdings["instrument_token"].values.tolist()
-
-    kws = KiteTicker(api_key, access_token)
-
-    if not os.path.exists("Vraj/ticker_data"):
-        os.makedirs("Vraj/ticker_data")
-
-    live_data = {}
-    last_close_prices = {}
-
-    kws.on_ticks = on_ticks
-    kws.on_connect = on_connect
-    kws.on_close = on_close
-
-    try:
-        kws.connect(threaded=True)
-        algo_trader()
-
-    except KeyboardInterrupt:
-        kws.stop()
-        save_live_data()
-
-    except Exception as e:
-        print(e)
+    algo_trader()
